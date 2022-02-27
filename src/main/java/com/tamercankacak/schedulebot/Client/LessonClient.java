@@ -1,8 +1,6 @@
 package com.tamercankacak.schedulebot.Client;
 
-import okhttp3.MediaType;
-import okhttp3.Request;
-import okhttp3.RequestBody;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class LessonClient {
 
@@ -15,5 +13,6 @@ public class LessonClient {
   }
 
   public void getOpenLessons(Object obj) throws Exception {
+    client.post(BASE_URL + "/graphql/v2/", new ObjectMapper().writeValueAsString(obj));
   }
 }
