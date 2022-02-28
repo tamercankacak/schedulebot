@@ -1,8 +1,12 @@
 package com.tamercankacak.schedulebot.Service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tamercankacak.schedulebot.Client.LessonClient;
 import com.tamercankacak.schedulebot.Entity.OpenLessons.OpenLessonRequest;
+import com.tamercankacak.schedulebot.Entity.OpenLessons.OpenLessonResponse;
 import com.tamercankacak.schedulebot.Entity.OpenLessons.Variables;
+import com.tamercankacak.schedulebot.Entity.UpcomingLessons.UpcomingLessonsRequest;
+import com.tamercankacak.schedulebot.Entity.UpcomingLessons.UpcomingLessonsResponse;
 import com.tamercankacak.schedulebot.config.AppConfig;
 
 import java.io.IOException;
@@ -18,7 +22,7 @@ public class LessonService {
     lessonClient = new LessonClient(config.cookie);
   }
 
-  public void getOpenLessons() throws Exception {
+  public OpenLessonResponse getOpenLessons() throws Exception {
     String dateStart = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
     String dateEnd =
         new SimpleDateFormat("yyyy-MM-dd")
@@ -29,7 +33,16 @@ public class LessonService {
             new Variables(
                 config.tutoringId, dateStart, dateEnd, "Europe/Moscow", config.durationHours),
             config.openLessonsQuery);
+    return new ObjectMapper()
+        .readValue(lessonClient.getOpenLessons(openLessonRequest), OpenLessonResponse.class);
+  }
 
-    lessonClient.getOpenLessons(openLessonRequest);
+  public UpcomingLessonsResponse getUpcomingLessons() throws Exception {
+    UpcomingLessonsRequest upcomingLessonsRequest =
+        new UpcomingLessonsRequest("CurrentUserUpcomingLessons", null, config.upcomingLessonsQuery);
+
+    return new ObjectMapper()
+        .readValue(
+            lessonClient.getUpcomingLessons(upcomingLessonsRequest), UpcomingLessonsResponse.class);
   }
 }

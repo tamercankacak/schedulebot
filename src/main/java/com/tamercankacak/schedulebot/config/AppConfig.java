@@ -11,7 +11,9 @@ public class AppConfig {
   public int dayLength;
   public double durationHours;
   public String openLessonsQuery;
+  public String upcomingLessonsQuery;
   public String cookie;
+
 
   public static AppConfig load() throws IOException {
     String config = new String(Files.readAllBytes(Paths.get("src/main/resources/AppConfig.json")));
