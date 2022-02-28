@@ -5,6 +5,8 @@ import com.tamercankacak.schedulebot.Client.LessonClient;
 import com.tamercankacak.schedulebot.Entity.OpenLessons.OpenLessonRequest;
 import com.tamercankacak.schedulebot.Entity.OpenLessons.OpenLessonResponse;
 import com.tamercankacak.schedulebot.Entity.OpenLessons.Variables;
+import com.tamercankacak.schedulebot.Entity.PastLessons.PastLessonsRequest;
+import com.tamercankacak.schedulebot.Entity.PastLessons.PastLessonsResponse;
 import com.tamercankacak.schedulebot.Entity.UpcomingLessons.UpcomingLessonsRequest;
 import com.tamercankacak.schedulebot.Entity.UpcomingLessons.UpcomingLessonsResponse;
 import com.tamercankacak.schedulebot.config.AppConfig;
@@ -44,5 +46,16 @@ public class LessonService {
     return new ObjectMapper()
         .readValue(
             lessonClient.getUpcomingLessons(upcomingLessonsRequest), UpcomingLessonsResponse.class);
+  }
+
+  public PastLessonsResponse getPastLessons() throws Exception {
+    PastLessonsRequest pastLessonsRequest =
+        new PastLessonsRequest(
+            "CurrentUserPastLessons",
+            new com.tamercankacak.schedulebot.Entity.PastLessons.Variables(5, 0),
+            config.pastLessonsQuery);
+
+    return new ObjectMapper()
+        .readValue(lessonClient.getPastLessons(pastLessonsRequest), PastLessonsResponse.class);
   }
 }

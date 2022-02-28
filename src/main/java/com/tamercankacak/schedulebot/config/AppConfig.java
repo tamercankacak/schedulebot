@@ -12,6 +12,7 @@ public class AppConfig {
   public double durationHours;
   public String openLessonsQuery;
   public String upcomingLessonsQuery;
+  public String pastLessonsQuery;
   public String cookie;
 
 
