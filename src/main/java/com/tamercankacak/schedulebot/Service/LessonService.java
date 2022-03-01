@@ -5,11 +5,15 @@ import com.tamercankacak.schedulebot.Client.LessonClient;
 import com.tamercankacak.schedulebot.Entity.OpenLessons.OpenLessonRequest;
 import com.tamercankacak.schedulebot.Entity.OpenLessons.OpenLessonResponse;
 import com.tamercankacak.schedulebot.Entity.OpenLessons.Variables;
+import com.tamercankacak.schedulebot.Entity.PastLessons.Node;
 import com.tamercankacak.schedulebot.Entity.PastLessons.PastLessonsRequest;
 import com.tamercankacak.schedulebot.Entity.PastLessons.PastLessonsResponse;
 import com.tamercankacak.schedulebot.Entity.UpcomingLessons.UpcomingLessonsRequest;
 import com.tamercankacak.schedulebot.Entity.UpcomingLessons.UpcomingLessonsResponse;
 import com.tamercankacak.schedulebot.config.AppConfig;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeConstants;
+import org.joda.time.LocalDate;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -58,4 +62,36 @@ public class LessonService {
     return new ObjectMapper()
         .readValue(lessonClient.getPastLessons(pastLessonsRequest), PastLessonsResponse.class);
   }
+
+  // must be <= 4
+  public int getTotalLessonInWeek() throws Exception {
+    LocalDate now = new LocalDate();
+    LocalDate monday = now.withDayOfWeek(DateTimeConstants.MONDAY);
+    LocalDate sunday = now.withDayOfWeek(DateTimeConstants.SUNDAY);
+    int totalHoursInWeek = 0;
+
+    for (Node node : getPastLessons().data.currentUser.client.mlLessons.pastLessons.nodes) {
+      LocalDate date = new DateTime(node.datetime).toLocalDate();
+      if (date.isAfter(monday.minusDays(1)) && date.isBefore(sunday.plusDays(1))) {
+        totalHoursInWeek++;
+      }
+    }
+
+    for (com.tamercankacak.schedulebot.Entity.UpcomingLessons.Node node :
+        getUpcomingLessons().data.currentUser.client.mlLessons.upcomingLessons.nodes) {
+      LocalDate date = new DateTime(node.datetime).toLocalDate();
+      if (date.isAfter(monday.minusDays(1)) && date.isBefore(sunday.plusDays(1))) {
+        totalHoursInWeek++;
+      }
+    }
+
+    return totalHoursInWeek;
+  }
+
+  public void schedule() throws Exception{
+    if(getTotalLessonInWeek() <= 4){
+
+    }
+  }
+
 }
