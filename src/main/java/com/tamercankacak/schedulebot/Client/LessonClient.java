@@ -2,7 +2,6 @@ package com.tamercankacak.schedulebot.Client;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tamercankacak.schedulebot.Entity.OpenLessons.OpenLessonRequest;
-import com.tamercankacak.schedulebot.Entity.PastLessons.PastLessonsRequest;
 import com.tamercankacak.schedulebot.Entity.UpcomingLessons.UpcomingLessonsRequest;
 import okhttp3.MediaType;
 import okhttp3.Request;
@@ -18,51 +17,23 @@ public class LessonClient {
     _cookie = cookie;
   }
 
-  public String getOpenLessons(OpenLessonRequest openLessonRequest) throws Exception {
-    RequestBody body =
-        RequestBody.create(
-            new ObjectMapper().writeValueAsString(openLessonRequest),
-            MediaType.parse("application/json; charset=utf-8"));
-    Request request =
-        new Request.Builder()
-            .url("https://preply.com/graphql/v2/")
-            .post(body)
-            .addHeader("content-type", "application/json")
-            .addHeader("cookie", _cookie)
-            .build();
+  public String post(Object obj) {
+    try {
+      RequestBody body =
+          RequestBody.create(
+              new ObjectMapper().writeValueAsString(obj),
+              MediaType.parse("application/json; charset=utf-8"));
 
-    return client.post(request).body().string();
-  }
-
-  public String getUpcomingLessons(UpcomingLessonsRequest upcomingLessonsRequest) throws Exception {
-    RequestBody body =
-        RequestBody.create(
-            new ObjectMapper().writeValueAsString(upcomingLessonsRequest),
-            MediaType.parse("application/json; charset=utf-8"));
-
-    Request request =
-        new Request.Builder()
-            .url("https://preply.com/graphql/v2/")
-            .post(body)
-            .addHeader("content-type", "application/json")
-            .addHeader("cookie", _cookie)
-            .build();
-    return client.post(request).body().string();
-  }
-
-  public String getPastLessons(PastLessonsRequest pastLessonsRequest) throws Exception {
-    RequestBody body =
-            RequestBody.create(
-                    new ObjectMapper().writeValueAsString(pastLessonsRequest),
-                    MediaType.parse("application/json; charset=utf-8"));
-
-    Request request =
-            new Request.Builder()
-                    .url("https://preply.com/graphql/v2/")
-                    .post(body)
-                    .addHeader("content-type", "application/json")
-                    .addHeader("cookie", _cookie)
-                    .build();
-    return client.post(request).body().string();
+      Request request =
+          new Request.Builder()
+              .url("https://preply.com/graphql/v2/")
+              .post(body)
+              .addHeader("content-type", "application/json")
+              .addHeader("cookie", _cookie)
+              .build();
+      return client.post(request).body().string();
+    } catch (Exception e) {
+      return null;
+    }
   }
 }
