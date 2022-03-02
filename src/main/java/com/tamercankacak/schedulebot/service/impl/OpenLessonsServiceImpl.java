@@ -4,12 +4,12 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tamercankacak.schedulebot.Client.LessonClient;
-import com.tamercankacak.schedulebot.Entity.ClientLesson;
 import com.tamercankacak.schedulebot.Entity.OpenLesson;
 import com.tamercankacak.schedulebot.Entity.Request;
 import com.tamercankacak.schedulebot.Entity.Variables;
 import com.tamercankacak.schedulebot.config.AppConfig;
 import com.tamercankacak.schedulebot.service.OpenLessonsService;
+import com.tamercankacak.schedulebot.util.DateUtil;
 import com.tamercankacak.schedulebot.util.RequestUtil;
 
 import java.io.IOException;
@@ -27,8 +27,8 @@ public class OpenLessonsServiceImpl implements OpenLessonsService {
 
   public List<OpenLesson> get() {
     try {
-      String dateStart = "2022-02-28";
-      String dateEnd = "2022-04-10";
+      String dateStart = DateUtil.getToday();
+      String dateEnd = DateUtil.getEndDate();
       Request request =
           new Request(
               new Variables(
