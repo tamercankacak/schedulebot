@@ -1,8 +1,6 @@
 package com.tamercankacak.schedulebot.Client;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.tamercankacak.schedulebot.Entity.OpenLessons.OpenLessonRequest;
-import com.tamercankacak.schedulebot.Entity.UpcomingLessons.UpcomingLessonsRequest;
 import okhttp3.MediaType;
 import okhttp3.Request;
 import okhttp3.RequestBody;

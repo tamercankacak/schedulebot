@@ -8,4 +8,8 @@ public class Request {
         this.variables = variables;
         this.query = query;
     }
+
+    public Request(String query) {
+        this.query = query;
+    }
 }

@@ -5,37 +5,47 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tamercankacak.schedulebot.Client.LessonClient;
 import com.tamercankacak.schedulebot.Entity.ClientLesson;
+import com.tamercankacak.schedulebot.Entity.OpenLesson;
 import com.tamercankacak.schedulebot.Entity.Request;
 import com.tamercankacak.schedulebot.Entity.Variables;
 import com.tamercankacak.schedulebot.config.AppConfig;
-import com.tamercankacak.schedulebot.service.PastLessonsService;
+import com.tamercankacak.schedulebot.service.OpenLessonsService;
 import com.tamercankacak.schedulebot.util.RequestUtil;
 
 import java.io.IOException;
 import java.util.List;
 
-public class PastLessonsServiceImpl implements PastLessonsService {
+public class OpenLessonsServiceImpl implements OpenLessonsService {
+
   private AppConfig config;
   private LessonClient lessonClient;
 
-  public PastLessonsServiceImpl() throws IOException {
+  public OpenLessonsServiceImpl() throws IOException {
     config = AppConfig.load();
     lessonClient = new LessonClient(config.cookie);
   }
 
-  public List<ClientLesson> get() {
+  public List<OpenLesson> get() {
     try {
-      Request request = new Request(new Variables(5, 1), config.pastLessonsQuery);
+      String dateStart = "2022-02-28";
+      String dateEnd = "2022-04-10";
+      Request request =
+          new Request(
+              new Variables(
+                  config.tutoringId, dateStart, dateEnd, "Europe/Moscow", config.durationHours),
+              config.openLessonsQuery);
       String responseBody = lessonClient.post(request);
 
-      JsonNode pastLessonsNode =
+      JsonNode openLessonsNode =
           RequestUtil.parseJSON(
               responseBody,
-              new String[] {"data", "currentUser", "client", "mlLessons", "pastLessons", "nodes"});
-      List<ClientLesson> pastClientLessons =
-          new ObjectMapper().convertValue(pastLessonsNode, new TypeReference<>() {});
-      return pastClientLessons;
+              new String[] {"data", "currentUser", "tutoring", "tutor", "timeslotsForBooking"});
+      List<OpenLesson> openLessons =
+          new ObjectMapper().convertValue(openLessonsNode, new TypeReference<>() {});
+
+      return openLessons;
     } catch (Exception e) {
+      System.out.println(e);
       return null;
     }
   }
