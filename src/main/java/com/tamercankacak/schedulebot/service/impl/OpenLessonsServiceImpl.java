@@ -25,7 +25,7 @@ public class OpenLessonsServiceImpl implements OpenLessonsService {
     lessonClient = new LessonClient(config.cookie);
   }
 
-  public List<OpenLesson> get() {
+  public List<OpenLesson> getOpenLessons() {
     try {
       String dateStart = DateUtil.getToday();
       String dateEnd = DateUtil.getEndDate();

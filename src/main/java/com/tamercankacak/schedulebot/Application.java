@@ -8,6 +8,6 @@ public class Application {
   public static void main(String[] args) throws Exception {
     System.out.println("welcome");
     OpenLessonsService service = new OpenLessonsServiceImpl();
-    service.get();
+    service.getOpenLessons();
   }
 }

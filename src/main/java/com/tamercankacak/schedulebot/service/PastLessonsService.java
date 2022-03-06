@@ -5,5 +5,5 @@ import com.tamercankacak.schedulebot.Entity.ClientLesson;
 import java.util.List;
 
 public interface PastLessonsService {
-  List<ClientLesson> get();
+  List<ClientLesson> getPastLessons();
 }

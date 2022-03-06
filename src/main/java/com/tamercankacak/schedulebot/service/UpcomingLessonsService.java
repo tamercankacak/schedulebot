@@ -5,5 +5,5 @@ import com.tamercankacak.schedulebot.Entity.ClientLesson;
 import java.util.List;
 
 public interface UpcomingLessonsService {
-  List<ClientLesson> get();
+  List<ClientLesson> getUpcomingLessons();
 }

@@ -23,7 +23,7 @@ public class PastLessonsServiceImpl implements PastLessonsService {
     lessonClient = new LessonClient(config.cookie);
   }
 
-  public List<ClientLesson> get() {
+  public List<ClientLesson> getPastLessons() {
     try {
       Request request = new Request(new Variables(5, 1), config.pastLessonsQuery);
       String responseBody = lessonClient.post(request);
@@ -32,9 +32,9 @@ public class PastLessonsServiceImpl implements PastLessonsService {
           RequestUtil.parseJSON(
               responseBody,
               new String[] {"data", "currentUser", "client", "mlLessons", "pastLessons", "nodes"});
-      List<ClientLesson> pastClientLessons =
+      List<ClientLesson> pastPastLessons =
           new ObjectMapper().convertValue(pastLessonsNode, new TypeReference<>() {});
-      return pastClientLessons;
+      return pastPastLessons;
     } catch (Exception e) {
       return null;
     }

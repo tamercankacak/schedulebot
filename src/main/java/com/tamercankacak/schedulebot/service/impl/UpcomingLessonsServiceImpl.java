@@ -23,7 +23,7 @@ public class UpcomingLessonsServiceImpl implements UpcomingLessonsService {
     lessonClient = new LessonClient(config.cookie);
   }
 
-  public List<ClientLesson> get() {
+  public List<ClientLesson> getUpcomingLessons() {
     try {
       Request request = new Request(config.upcomingLessonsQuery);
       String responseBody = lessonClient.post(request);
@@ -35,9 +35,9 @@ public class UpcomingLessonsServiceImpl implements UpcomingLessonsService {
                 "data", "currentUser", "client", "mlLessons", "upcomingLessons", "nodes"
               });
 
-      List<ClientLesson> upcomingClientLessons =
+      List<ClientLesson> upcomingPastLessons =
           new ObjectMapper().convertValue(upcomingLessonsNode, new TypeReference<>() {});
-      return upcomingClientLessons;
+      return upcomingPastLessons;
     } catch (Exception e) {
       System.out.println(e);
       return null;
